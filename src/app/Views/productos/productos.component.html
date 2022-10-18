@@ -1,0 +1,516 @@
+<div class="container-fluid" style="margin-top: 35px;">
+    <h1 class="display-4" style="text-align: center; font-weight:500;">PRODUCTOS</h1>
+
+    <!-- BOTÓN PARA ABRIR MODAL -->
+    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#agregar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+          </svg>
+        Agregar
+    </button>
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4" style="margin-top: 35px;">
+        <div class="card-header py-3">
+            <div class="input-group mb-3">
+                <span class="input-group-text" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                      </svg>
+                </span>
+                
+                <input type="text" class="form-control" name="filtroProdu" placeholder="Buscar... (Nombre, Contenido, Unidad)" 
+                [(ngModel)]="filtroProdu" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Estado</th>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Contenido</th>
+                            <th>Sucursal</th>
+                            <th>Unidad</th>
+                            <th>Id proveedor</th>
+                            <th>$ proveedor</th>
+                            <th>$ menudeo</th>
+                            <th>$ mayoreo</th>
+                            <th>Caducidad</th>
+                            <th>Existencia</th>
+                            <th>Stock</th>
+                            <th>Activación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let productos of productosDetails | filtroProducto : filtroProdu">
+                            <td *ngIf="productos.status == null || productos.status <1" style="background-color: black; color: white;">Desconocido</td>
+                            <td *ngIf="productos.status >= 20" style="background-color: #20A140; color: white;">Excelente</td>
+                            <td *ngIf="productos.status >= 10 && productos.status<20" style="background-color: #EAB81C;">Moderado</td>
+                            <td *ngIf="(productos.status<10 && productos.status>=1)" style="background-color: #F55353; color: white;">Crítico</td>
+                            
+                            <td>{{productos.id_Producto}}</td>
+                            <td>{{productos.nombre}}</td>
+                            <td>{{productos.idCategoria}}</td>
+                            <td>{{productos.contenido}}</td>
+                            <td>{{productos.idSucursal}}</td>
+                            <td>{{productos.tipoUnidad}}</td>
+                            <td>{{productos.idProveedor}}</td>
+                            <td>${{productos.precioProveedor}}</td>
+                            <td>${{productos.precioMenudeo}}</td>
+                            <td>${{productos.precioMayoreo}}</td>
+                            <td>{{productos.fcaducidad| date :"dd-MMM-yyyy"}} </td>
+                            <td>{{productos.existencia}}</td>
+
+                            <td *ngIf="(productos.existencia >= 80)" style="background-color: #20A140; font-weight: bold;">Lleno</td>
+                            <td *ngIf="(productos.existencia >= 50 && productos.existencia<80)" style="background-color: #EAB81C; font-weight: bold;">Suficiente</td>
+                            <td *ngIf="(productos.existencia >= 25 && productos.existencia<50)" style="background-color: #F16109; font-weight: bold;">Intermedio</td>
+                            <td *ngIf="(productos.existencia >= 0 && productos.existencia<25)" style="background-color: #F55353; font-weight: bold;">Poco</td>
+
+                            <td *ngIf="productos.cactivacion == true" >Activado</td>
+                            <td *ngIf="productos.cactivacion == false">Desactivado</td>
+                            <td>
+
+                                <!-- Botón Editar -->
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editar" (click)="edit(productos)"><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+                                        <mask id="svgIDb">
+                                            <g fill="none">
+                                                <g stroke="#fff" stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="4" clip-path="url(#svgIDa)">
+                                                    <path
+                                                        d="m31 8.999l8 8m-31 15L36 4l8 7.999l-28 28l-10 2l2-10Zm23-23l8 8m-30 15l7 7m-3-4l22-22" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="svgIDa">
+                                                        <path fill="#000" d="M0 0h48v48H0z" />
+                                                    </clipPath>
+                                                </defs>
+                                            </g>
+                                        </mask>
+                                        <path fill="#fff" d="M0 0h48v48H0z" mask="url(#svgIDb)" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+<!-- EMPIEZA MODAL AGREGAR -->
+<div class="modal fade" #agregar id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+  
+            <!-- Header del Modal -->
+            <div class="modal-header" style="background-color: #4F8BFF;">
+                <!-- Título Modal -->
+                <h4 class="modal-title" style="color: white;">Agregar Productos</h4>
+                <!-- Botón para cerrar Modal -->
+                <button class="btn btn-outline-dark close" aria-label="close" type="button" data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+  
+            <!-- Body del Modal -->
+        <div class="modal-body">
+            <form #addProducto="ngForm" (ngSubmit)="addProductos(addProducto)">
+
+
+                <label for="basic-url" class="form-label">Id producto</label>
+                <div class="input-group mb-3">
+                    <input type="text" #id_producto name="id_Producto" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled>
+                </div>
+
+                <label for="basic-url" class="form-label">Nombre del producto</label>
+                <div class="input-group mb-3">
+                    <input type="text" #nombre name="nombre" class="form-control" id="basic-url" (ngModel)="productosToUpdate.nombre" aria-describedby="basic-addon3">
+                </div>
+
+                <div class="form-group">
+                    <label for="id_categoria" class="form-label">Id de categoria</label>
+
+                    <div>
+                        <select class="form-select" #idCategoria name="idCategoria" (ngModel)="productosToUpdate.idCategoria">
+                            <option *ngFor="let categoria of categoriasDetails" value="{{categoria.id_categoria}}">{{categoria.id_categoria}}.- {{categoria.categoria}}</option>
+                        </select>
+                    </div>
+                    
+                </div>
+
+
+                
+
+  
+                <label for="basic-url" class="form-label">Contenido</label>
+                <div class="input-group mb-3">
+                    <input type="text" #contenido name="contenido" class="form-control" (ngModel)="productosToUpdate.contenido" id="basic-url" aria-describedby="basic-addon3">
+                </div>
+  
+                
+                <div class="form-group">
+                    <label for="id_sucursal" class="form-label">Id de Sucursal</label>
+                    <div>
+                        <select class="form-select" #idSucursal name="idSucursal" (ngModel)="productosToUpdate.idSucursal">
+                            <option *ngFor="let tienda of tiendasDetails" value="{{tienda.id_sucursal}}">{{tienda.id_sucursal}}.- {{tienda.direccion}}  {{tienda.estado}} ( {{tienda.clvSuc}} )</option>
+                        </select>
+                    </div>
+                </div>
+  
+                <label for="basic-url" class="form-label">Tipo de unidad</label>
+                <div class="input-group mb-3">
+                    <input type="text" #tipoUnidad name="tipoUnidad" class="form-control" id="basic-url" (ngModel)="productosToUpdate.tipoUnidad" aria-describedby="basic-addon3">
+                </div>
+
+                <div class="form-group">
+                    <label for="idProveedor" class="form-label">Id de proveedor</label>
+                    <div>
+                        <select class="form-select" #idProveedor name="idProveedor" (ngModel)="productosToUpdate.idProveedor" >
+                            <option *ngFor="let proveedor of proveedoresDetails" value="{{proveedor.id_proveedor}}">{{proveedor.id_proveedor}}.- {{proveedor.nombreProveedor}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label for="basic-url" class="form-label">Precio de proveedor</label>
+                <div class="input-group mb-3">
+                    <input type="text" #precioProveedor name="precioProveedor" class="form-control" id="basic-url" (ngModel)="productosToUpdate.precioProveedor" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Precio de menudeo</label>
+                <div class="input-group mb-3">
+                    <input type="text" #precioMenudeo name="precioMenudeo" class="form-control" id="basic-url" (ngModel)="productosToUpdate.precioMenudeo" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Precio de mayoreo</label>
+                <div class="input-group mb-3">
+                    <input type="text" #precioMayoreo name="precioMayoreo" class="form-control" id="basic-url" (ngModel)="productosToUpdate.precioMayoreo" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Fecha de caducidad</label>
+                <div class="input-group mb-3">
+                    <input type="date" #fcaducidad name="fcaducidad" class="form-control" id="basic-url" (ngModel)="productosToUpdate.fcaducidad" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Existencia</label>
+                <div class="input-group mb-3">
+                    <input type="text" #existencia name="existencia" class="form-control" id="basic-url" (ngModel)="productosToUpdate.existencia" aria-describedby="basic-addon3">
+                </div>
+
+
+                
+  
+            <!-- Pie de Modal con botón -->
+                <div class="modal-footer">
+                    <button #AgregarButtonMembresia id="#AgregarButtonMembresia"   onClick="window.location.reload();" type="submit" style="margin-top: 10px;" class="btn btn-outline-primary">Agregar</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+  </div>
+  <!-- TERMINA MODAL AGREGAR -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- EMPIEZA MODAL EDITAR -->
+<div class="modal fade" #editar id="editar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+  
+            <!-- Header del Modal -->
+            <div class="modal-header" style="background-color: #20A140;">
+                <!-- Título Modal -->
+                <h4 class="modal-title" style="color: white;">Editar Productos</h4>
+                <!-- Botón para cerrar Modal -->
+                <button class="btn btn-outline-dark close" aria-label="close" type="button" data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+  
+            <!-- Body del Modal -->
+        <div class="modal-body">
+            <form #addProducto="ngForm">
+
+                <label for="basic-url" class="form-label">Id producto</label>
+                <div class="input-group mb-3">
+                    <input type="text" #id_Producto name="id_Producto" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.id_Producto" aria-describedby="basic-addon3" disabled>
+                </div>
+
+                <label for="basic-url" class="form-label">Nombre del producto</label>
+                <div class="input-group mb-3">
+                    <input type="text" #nombre name="nombre" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.nombre" aria-describedby="basic-addon3">
+                </div>
+
+                <div class="form-group">
+                    <label for="id_categoria" class="form-label">Id de categoria</label>
+
+                    <div>
+                        <select class="form-select" #idCategoria name="idCategoria" [(ngModel)]="productosToUpdate.idCategoria">
+                            <option *ngFor="let categoria of categoriasDetails" value="{{categoria.id_categoria}}">{{categoria.id_categoria}}.- {{categoria.categoria}}</option>
+                        </select>
+                    </div>
+                    
+                </div>
+
+
+                
+
+                <label for="basic-url" class="form-label">Contenido</label>
+                <div class="input-group mb-3">
+                    <input type="text" #contenido name="contenido" class="form-control" [(ngModel)]="productosToUpdate.contenido" id="basic-url" aria-describedby="basic-addon3">
+                </div>
+  
+                
+                <div class="form-group">
+                    <label for="id_sucursal" class="form-label">Id de Sucursal</label>
+                    <div>
+                        <select class="form-select" #idSucursal name="idSucursal" [(ngModel)]="productosToUpdate.idSucursal">
+                            <option *ngFor="let tienda of tiendasDetails" value="{{tienda.id_sucursal}}">{{tienda.id_sucursal}}.- {{tienda.direccion}}  {{tienda.estado}} ( {{tienda.clvSuc}} )</option>
+                        </select>
+                    </div>
+                </div>
+  
+                <label for="basic-url" class="form-label">Tipo de unidad</label>
+                <div class="input-group mb-3">
+                    <input type="text" #tipoUnidad name="tipoUnidad" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.tipoUnidad" aria-describedby="basic-addon3">
+                </div>
+
+                <div class="form-group">
+                    <label for="idProveedor" class="form-label">Id de proveedor</label>
+                    <div>
+                        <select class="form-select" #idProveedor name="idProveedor" [(ngModel)]="productosToUpdate.idProveedor" >
+                            <option *ngFor="let proveedor of proveedoresDetails" value="{{proveedor.id_proveedor}}">{{proveedor.id_proveedor}}.- {{proveedor.nombreProveedor}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label for="basic-url" class="form-label">Precio de proveedor</label>
+                <div class="input-group mb-3">
+                    <input type="text" #precioProveedor name="precioProveedor" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.precioProveedor" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Precio de menudeo</label>
+                <div class="input-group mb-3">
+                    <input type="text" #precioMenudeo name="precioMenudeo" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.precioMenudeo" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Precio de mayoreo</label>
+                <div class="input-group mb-3">
+                    <input type="text" #precioMayoreo name="precioMayoreo" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.precioMayoreo" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Fecha de caducidad</label>
+                <div class="input-group mb-3">
+                    <input type="date" #fcaducidad name="fcaducidad" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.fcaducidad" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Existencia</label>
+                <div class="input-group mb-3">
+                    <input type="text" #existencia name="existencia" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.existencia" aria-describedby="basic-addon3">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Activación</label>
+                    <div>
+                        <select class="form-select" #cactivacion name="cactivacion" [(ngModel)]="productosToUpdate.cactivacion" aria-label="Default select example">  
+                            <option  value="true" selected>Si</option>  
+                            <option value="false">No</option>  
+                        </select>
+                    </div>
+                </div>
+
+                
+
+  
+            
+                <!-- Pie de Modal con botón -->
+                <div class="form-group">
+                    <button #AgregarButtonProducto_edit id="AgregarButtonProducto_Edit" onClick="window.location.reload();"  (click)="updateProducto(id_Producto.value)" type="submit" style="margin-top: 10px;" class="btn btn-outline-success">Editar</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+  </div>
+  <!-- TERMINA MODAL EDITAR -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- EMPIEZA MODAL ELIMINAR -->
+<div class="modal fade" #eliminar id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+  
+            <!-- Header del Modal -->
+            <div class="modal-header" style="background-color: #F55353;">
+                <!-- Título Modal -->
+                <h4 class="modal-title" style="color: white;">Eliminar Productos</h4>
+                <!-- Botón para cerrar Modal -->
+                <button class="btn btn-outline-dark close" aria-label="close"  type="button" data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+  
+            <!-- Body del Modal -->
+        <div class="modal-body">
+            <form #addProducto="ngForm">
+
+                <label for="basic-url" class="form-label">Id producto</label>
+                <div class="input-group mb-3">
+                    <input type="text" disabled #id_Producto name="id_Producto" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.id_Producto" aria-describedby="basic-addon3" disabled>
+                </div>
+
+                <label for="basic-url" class="form-label">Nombre del producto</label>
+                <div class="input-group mb-3">
+                    <input type="text" #nombre disabled name="nombre" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.nombre" aria-describedby="basic-addon3">
+                </div>
+
+                <div class="form-group">
+                    <label for="id_categoria" class="form-label">Id de categoria</label>
+
+                    <div>
+                        <select disabled class="form-select" #idCategoria name="idCategoria" [(ngModel)]="productosToUpdate.idCategoria">
+                            <option *ngFor="let categoria of categoriasDetails" value="{{categoria.id_categoria}}">{{categoria.id_categoria}}.- {{categoria.categoria}}</option>
+                        </select>
+                    </div>
+                    
+                </div>
+
+
+                
+
+                <label for="basic-url" class="form-label">Contenido</label>
+                <div class="input-group mb-3">
+                    <input type="text" disabled #contenido name="contenido" class="form-control" [(ngModel)]="productosToUpdate.contenido" id="basic-url" aria-describedby="basic-addon3">
+                </div>
+  
+                
+                <div class="form-group">
+                    <label for="id_sucursal" class="form-label">Id de Sucursal</label>
+                    <div>
+                        <select disabled class="form-select" #idSucursal name="idSucursal" [(ngModel)]="productosToUpdate.idSucursal">
+                            <option *ngFor="let tienda of tiendasDetails" value="{{tienda.id_sucursal}}">{{tienda.id_sucursal}}.- {{tienda.direccion}}  {{tienda.estado}} ( {{tienda.clvSuc}} )</option>
+                        </select>
+                    </div>
+                </div>
+  
+                <label for="basic-url" class="form-label">Tipo de unidad</label>
+                <div class="input-group mb-3">
+                    <input disabled type="text" #tipoUnidad name="tipoUnidad" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.tipoUnidad" aria-describedby="basic-addon3">
+                </div>
+
+                <div class="form-group">
+                    <label for="idProveedor" class="form-label">Id de proveedor</label>
+                    <div>
+                        <select disabled class="form-select" #idProveedor name="idProveedor" [(ngModel)]="productosToUpdate.idProveedor" >
+                            <option *ngFor="let proveedor of proveedoresDetails" value="{{proveedor.id_proveedor}}">{{proveedor.id_proveedor}}.- {{proveedor.nombreProveedor}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label for="basic-url" class="form-label">Precio de proveedor</label>
+                <div class="input-group mb-3">
+                    <input type="text" disabled #precioProveedor name="precioProveedor" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.precioProveedor" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Precio de menudeo</label>
+                <div class="input-group mb-3">
+                    <input type="text" disabled #precioMenudeo name="precioMenudeo" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.precioMenudeo" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Precio de mayoreo</label>
+                <div class="input-group mb-3">
+                    <input type="text" disabled #precioMayoreo name="precioMayoreo" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.precioMayoreo" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Fecha de caducidad</label>
+                <div class="input-group mb-3">
+                    <input type="date" disabled #fcaducidad name="fcaducidad" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.fcaducidad" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url" class="form-label">Existencia</label>
+                <div class="input-group mb-3">
+                    <input type="text" disabled #existencia name="existencia" class="form-control" id="basic-url" [(ngModel)]="productosToUpdate.existencia" aria-describedby="basic-addon3">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Activación</label>
+                    <div>
+                        <select disabled class="form-select" #cactivacion name="cactivacion" [(ngModel)]="productosToUpdate.cactivacion" aria-label="Default select example">  
+                            <option  value="true" selected>Si</option>  
+                            <option value="false">No</option>  
+                        </select>
+                    </div>
+                </div>
+
+                
+
+  
+            
+                <!-- Pie de Modal con botón -->
+                <div class="form-group">
+                    <button #AgregarButtonProducto_edit id="AgregarButtonProducto_Edit" onClick="window.location.reload();" (click)="eliminarProducto(id_Producto.value)" type="submit" style="margin-top: 10px;" class="btn btn-outline-danger">Confirmar eliminacion de producto</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+  </div>
+  <!-- TERMINA MODAL ELIMINAR -->

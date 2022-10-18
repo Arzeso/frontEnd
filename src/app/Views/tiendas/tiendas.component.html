@@ -1,0 +1,304 @@
+<div class="container" style="margin-top: 55px;">
+    <h2 style="margin-bottom: 35px; font-size: 45px;">Tiendas</h2>
+
+    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#agregar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+      </svg>
+      Agregar</button>
+    <button class="btn btn-outline-success" style="margin-left: 15px;" (click)="generarReporte()">
+        Generar Reporte 
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path fill="currentColor" d="M453.547 273.449H372.12v-40.714h81.427v40.714zm0 23.264H372.12v40.714h81.427v-40.714zm0-191.934H372.12v40.713h81.427V104.78zm0 63.978H372.12v40.713h81.427v-40.713zm0 191.934H372.12v40.714h81.427V360.69zm56.242 80.264c-2.326 12.098-16.867 12.388-26.58 12.796H302.326v52.345h-36.119L0 459.566V52.492L267.778 5.904h34.548v46.355h174.66c9.83.407 20.648-.291 29.197 5.583c5.991 8.608 5.41 19.543 5.817 29.43l-.233 302.791c-.29 16.925 1.57 34.2-1.978 50.892zm-296.51-91.256c-16.052-32.57-32.395-64.909-48.39-97.48c15.82-31.698 31.408-63.512 46.937-95.327c-13.203.64-26.406 1.454-39.55 2.385c-9.83 23.904-21.288 47.169-28.965 71.888c-7.154-23.323-16.634-45.774-25.3-68.515c-12.796.698-25.592 1.454-38.387 2.21c13.493 29.78 27.86 59.15 40.946 89.104c-15.413 29.081-29.837 58.57-44.785 87.825c12.737.523 25.475 1.047 38.212 1.221c9.074-23.148 20.357-45.424 28.267-69.038c7.096 25.359 19.135 48.798 29.023 73.051c14.017.99 27.976 1.862 41.993 2.676zM484.26 79.882H302.326v24.897h46.53v40.713h-46.53v23.265h46.53v40.713h-46.53v23.265h46.53v40.714h-46.53v23.264h46.53v40.714h-46.53v23.264h46.53v40.714h-46.53v26.897H484.26V79.882z"/></svg>
+    </button>
+
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4" style="margin-top: 35px;">
+        <div class="card-header py-3">
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                </span>
+                <input type="text" class="form-control" name="filtroSuc" placeholder="Buscar... (Dirección, Estado, Clave Sucursal)"
+                    [(ngModel)]="filtroSuc" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+
+
+        </div>
+
+
+        <div class="card-body" id="reporte">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Id tienda</th>
+                            <th>Dirección</th>
+                            <th>Estado</th>
+                            <th>Clave Sucursal</th>
+                            <th>Clave de Activación</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let tienda of tiendasDetails | tienda : filtroSuc">
+                            <td>{{tienda.id_sucursal}}</td>
+                            <td>{{tienda.direccion}}</td>
+                            <td>{{tienda.estado}}</td>
+                            <td>{{tienda.clvSuc}}</td>
+                            <td>{{tienda.cactivacion}}</td>
+                            <td>
+                                <!-- Botón Editar -->
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editar"
+                                    (click)="edit(tienda)"><svg xmlns="http://www.w3.org/2000/svg" width="1em"
+                                        height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+                                        <mask id="svgIDb">
+                                            <g fill="none">
+                                                <g stroke="#fff" stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="4" clip-path="url(#svgIDa)">
+                                                    <path
+                                                        d="m31 8.999l8 8m-31 15L36 4l8 7.999l-28 28l-10 2l2-10Zm23-23l8 8m-30 15l7 7m-3-4l22-22" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="svgIDa">
+                                                        <path fill="#000" d="M0 0h48v48H0z" />
+                                                    </clipPath>
+                                                </defs>
+                                            </g>
+                                        </mask>
+                                        <path fill="#fff" d="M0 0h48v48H0z" mask="url(#svgIDb)" />
+                                    </svg>
+                                </button>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+<!-- EMPIEZA MODAL EDITAR -->
+<div class="modal fade" id="editar" #editar tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+
+            <!-- Header del Modal -->
+            <div class="modal-header">
+                <!-- Título Modal -->
+                <h4 class="modal-title" id="exampleModalLabel_Editar">Editar Tiendas</h4>
+                <!-- Botón para cerrar Modal -->
+                <button class="btn btn-danger close" aria-label="close" type="button" data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- Body del Modal -->
+            <div class="modal-body">
+                <form #updateForm="ngForm">
+                    <div class="form-group">
+                        <label for="id_sucursal" class="form-label">Id_Sucursal</label>
+                        <input type="text" disabled #id_sucursal [(ngModel)]="tiendasToUpdate.id_sucursal"
+                            name="id_sucursal" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" #direccion [(ngModel)]="tiendasToUpdate.direccion" name="direccion"
+                            class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estado" class="form-label">Estado</label>
+                        <input type="text" #estado [(ngModel)]="tiendasToUpdate.estado" name="estado"
+                            class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clvSuc" class="form-label">Clave Sucursal</label>
+                        <input type="text" #clvSuc [(ngModel)]="tiendasToUpdate.clvSuc" name="clvSuc"
+                            class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Activación</label>
+                        <div>
+                            <select class="form-select" #cactivacion name="cactivacion"
+                                [(ngModel)]="tiendasToUpdate.cactivacion" aria-label="Default select example">
+                                <option value="true" selected>True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <!-- Pie de Modal con botón -->
+                    <div class="form-group">
+                        <button type="submit" #EditarButton id="editarButton" onClick="window.location.reload();"
+                            value="Edit" (click)="updateTienda(id_sucursal.value)" style="margin-top: 10px;"
+                            class="btn btn-outline-success">Editar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- TERMINA MODAL EDITAR -->
+
+
+<!-- EMPIEZA MODAL REGISTRAR -->
+<div class="modal fade" id="agregar" #agregar tabindex="-1" role="dialog" aria-labelledby="vv" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+
+            <!-- Header del Modal -->
+            <div class="modal-header">
+                <!-- Título Modal -->
+                <h4 class="modal-title" id="vv">Generar Tiendas</h4>
+                <!-- Botón para cerrar Modal -->
+                <button class="btn btn-danger close" aria-label="close" type="button" data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- Body del Modal -->
+            <div class="modal-body">
+                <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+                    <div class="form-group">
+                        <label for="id_sucursal" class="form-label">Id_Sucursal</label>
+                        <input type="text" #id_sucursal_agregar (ngModel)="tiendasToUpdate.id_sucursal"
+                            name="id_sucursal_agregar" class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" #direccion (ngModel)="tiendasToUpdate.direccion" name="direccion"
+                            class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estado" class="form-label">Estado</label>
+                        <input type="text" #estado (ngModel)="tiendasToUpdate.estado" name="estado"
+                            class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clvSuc" class="form-label">Clave Sucursal</label>
+                        <input type="text" #clvSuc (ngModel)="tiendasToUpdate.clvSuc" name="clvSuc"
+                            class="form-control">
+                    </div>
+
+
+
+                    <!-- Pie de Modal con botón -->
+                    <div class="form-group">
+                        <button #AgregarButton id="AgregarButton" onClick="window.location.reload();" type="submit"
+                            style="margin-top: 10px;" class="btn btn-outline-success">Agregar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TERMINA MODAL Registrar -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- EMPIEZA MODAL ELIMINAR -->
+<div class="modal fade" id="eliminar" #eliminar tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+
+            <!-- Header del Modal -->
+            <div class="modal-header" style="background-color: #F55353;">
+                <!-- Título Modal -->
+                <h4 class="modal-title" id="exampleModalLabelEliminar" style="color: white;">Eliminar Tiendas</h4>
+                <!-- Botón para cerrar Modal -->
+                <button class="btn btn-outline-dark close" aria-label="close" type="button" data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- Body del Modal -->
+            <div class="modal-body">
+                <form #eliminarForm="ngForm">
+                    <div class="form-group">
+                        <label for="id_sucursal" class="form-label">Id_Sucursal</label>
+                        <input type="text" #id_sucursal_eliminar [(ngModel)]="tiendasToUpdate.id_sucursal"
+                            name="id_sucursal_eliminar" class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" #direccion_eliminar name="direccion" [(ngModel)]="tiendasToUpdate.direccion"
+                            class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estado" class="form-label">Estado</label>
+                        <input type="text" #estado_eliminar name="estado" [(ngModel)]="tiendasToUpdate.estado"
+                            class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clvSuc" class="form-label">Clave Sucursal</label>
+                        <input type="text" #clvSuc_eliminar name="clvSuc" [(ngModel)]="tiendasToUpdate.clvSuc"
+                            class="form-control" disabled>
+                    </div>
+
+
+
+                    <!-- Pie de Modal con botón -->
+                    <div class="form-group">
+                        <button #EliminarButton (click)="eliminarTienda(id_sucursal_eliminar.value)"
+                            onClick="window.location.reload();" id="EliminarButton" type="submit"
+                            style="margin-top: 10px;" class="btn btn-outline-danger">Confirmar eliminación de
+                            tienda</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TERMINA MODAL ELIMINAR -->

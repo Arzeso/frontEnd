@@ -1,0 +1,200 @@
+<div class="container" style="margin-top: 65px;">
+    <h2 style="margin-bottom: 55px;">CATEGORÍAS DE PRODUCTOS</h2>
+  
+    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#agregar">Agregar</button>
+  
+  
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4" style="margin-top: 35px;">
+      <div class="card-header py-3">
+  
+        <div class="input-group mb-3">
+          <span class="input-group-text">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+              viewBox="0 0 16 16">
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+          </span>
+          <input type="text" class="form-control" name="filtroCategoria" placeholder="Buscar..."
+            [(ngModel)]="filtroCategoria" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+  
+  
+      </div>
+  
+  
+      <div class="card-body" id="reporte">
+        <div class="table-responsive">
+          <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Id Categoría</th>
+                <th>Nombre Categoría</th>
+                <th>Clave de Activación</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+  
+            <tbody>
+              <tr *ngFor="let categoria of categoriasDetails | categorias : filtroCategoria">
+                <td>{{categoria.id_categoria}}</td>
+                <td>{{categoria.categoria}}</td>
+                <td *ngIf="categoria.cactivacion == true">Activado</td>
+                <td *ngIf="categoria.cactivacion == false">Desactivado</td>
+                <td>
+  
+  
+                  <!-- Botón Editar -->
+                  <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editar"
+                    (click)="edit(categoria)"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                      preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48">
+                      <mask id="svgIDb">
+                        <g fill="none">
+                          <g stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"
+                            clip-path="url(#svgIDa)">
+                            <path
+                              d="m31 8.999l8 8m-31 15L36 4l8 7.999l-28 28l-10 2l2-10Zm23-23l8 8m-30 15l7 7m-3-4l22-22" />
+                          </g>
+                          <defs>
+                            <clipPath id="svgIDa">
+                              <path fill="#000" d="M0 0h48v48H0z" />
+                            </clipPath>
+                          </defs>
+                        </g>
+                      </mask>
+                      <path fill="#fff" d="M0 0h48v48H0z" mask="url(#svgIDb)" />
+                    </svg>
+                  </button>
+  
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
+  
+  
+    </div>
+  
+  </div>
+  
+  
+  
+  <!-- EMPIEZA MODAL EDITAR -->
+  <div class="modal fade" id="editar" #editar tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+  
+        <!-- Header del Modal -->
+        <div class="modal-header">
+          <!-- Título Modal -->
+          <h4 class="modal-title" id="exampleModalLabel_Editar">Editar Categorías</h4>
+          <!-- Botón para cerrar Modal -->
+          <button class="btn btn-danger close" aria-label="close" type="button" data-bs-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+  
+        <!-- Body del Modal -->
+        <div class="modal-body">
+          <form #updateForm="ngForm">
+            <div class="form-group">
+              <label for="id_categoria" class="form-label">Id_categoria</label>
+              <input type="text" disabled #id_categoria [(ngModel)]="categoriaToUpdate.id_categoria" name="id_categoria"
+                class="form-control">
+            </div>
+  
+            <div class="form-group">
+              <label for="categoria" class="form-label">Categoría</label>
+              <input type="text" #categoria [(ngModel)]="categoriaToUpdate.categoria" name="categoria"
+                class="form-control">
+            </div>
+  
+            <div class="form-group">
+  
+              <label class="form-label">Activación</label>
+  
+              <div>
+  
+                <select class="form-select" #cactivacion name="cactivacion" [(ngModel)]="categoriaToUpdate.cactivacion"
+                  aria-label="Default select example">
+  
+                  <option value="true" selected>Si</option>
+  
+                  <option value="false">No</option>
+  
+                </select>
+  
+              </div>
+  
+            </div>
+  
+            <!-- Pie de Modal con botón -->
+            <div class="form-group">
+              <button type="submit" #EditarButton id="editarButton" onClick="window.location.reload();" value="Edit"
+                (click)="updateCategoria(id_categoria.value)" style="margin-top: 10px;"
+                class="btn btn-outline-success">Editar</button>
+            </div>
+          </form>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- TERMINA MODAL EDITAR -->
+  
+  
+  
+  <!---------------------------------------------------------------------------------------------------------------------------->
+  
+  
+  
+  <!-- EMPIEZA MODAL REGISTRAR -->
+  <div class="modal fade" id="agregar" #agregar tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+  
+        <!-- Header del Modal -->
+        <div class="modal-header">
+          <!-- Título Modal -->
+          <h4 class="modal-title" id="exampleModalLabel">Agregar Categoría</h4>
+          <!-- Botón para cerrar Modal -->
+          <button class="btn btn-danger close" aria-label="close" type="button" data-bs-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+  
+        <!-- Body del Modal -->
+        <div class="modal-body">
+          <form #registerForm="ngForm" (ngSubmit)="registerCategoria(registerForm)">
+            <div class="form-group">
+              <label for="id_categoria" class="form-label">Id Categoria</label>
+              <input type="text" #id_categoria_agregar (ngModel)="categoriaToUpdate.id_categoria"
+                name="id_categoria_agregar" class="form-control" disabled>
+            </div>
+  
+            <div class="form-group">
+              <label for="categoria" class="form-label">Categoria</label>
+              <input type="text" #categoria (ngModel)="categoriaToUpdate.categoria" name="categoria" class="form-control">
+            </div>
+  
+            <!-- Pie de Modal con botón -->
+            <div class="form-group">
+              <button #AgregarButton id="AgregarButton" type="submit" style="margin-top: 10px;"
+                class="btn btn-outline-success" onClick="window.location.reload();">Agregar</button>
+            </div>
+          </form>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- TERMINA MODAL Registrar -->
+  
+  
+  <!---------------------------------------------------------------------------------------------------------------------------->
